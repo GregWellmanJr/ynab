@@ -1,27 +1,36 @@
-FROM ubuntu:15.04
+FROM ubuntu:16.04
 
-MAINTAINER Jordan Schatz "jordan@noionlabs.com"
+MAINTAINER Joe Phillips "phillijw@gmail.com"
 
 # Let apt know that we will be running non-interactively.
 ENV DEBIAN_FRONTEND noninteractive
 
+# Install wget
+RUN apt-get update; apt-get install -y wget
+
+# Install apt-add-repository
+RUN apt-get install -y software-properties-common python-software-properties apt-transport-https
+
 # Setup i386 architecture
 RUN dpkg --add-architecture i386; \
-    echo 'deb http://ppa.launchpad.net/ubuntu-wine/ppa/ubuntu vivid main' \
-          >>  /etc/apt/sources.list; \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5A9A06AEF9CB8DB0
+    wget -nc https://dl.winehq.org/wine-builds/Release.key; \
+    apt-key add Release.key; \
+    apt-add-repository https://dl.winehq.org/wine-builds/ubuntu/
 
 # Get the latest WINE
-RUN apt-get update; apt-get install -y wine1.7 winetricks wine-mono4.5.6 wine-gecko2.34
+RUN apt-get update; apt-get install -y winehq-stable
 
 # Set the locale and timezone.
-RUN localedef -v -c -i en_US -f UTF-8 en_US.UTF-8 || :
-RUN echo "America/Los_Angeles" > /etc/timezone
+RUN apt-get update; apt-get install -y locales tzdata
+RUN locale-gen en_US.UTF-8
+RUN update-locale LANG=en_US.UTF-8
+RUN echo "America/Chicago" > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 # Create a user inside the container, what has the same UID as your
 # user on the host system, to permit X11 socket sharing / GUI Your ID
 # is probably 1000, but you can find out by typing `id` at a terminal.
+RUN apt-get update; apt-get install -y sudo
 RUN export uid=1000 gid=1000 && \
     mkdir -p /home/docker && \
     echo "docker:x:${uid}:${gid}:Docker,,,:/home/docker:/bin/bash" >> /etc/passwd && \

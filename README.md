@@ -2,7 +2,7 @@
 
 Build the docker container:
 
-`docker build -t YOUR-CONTAINER-NAME https://raw.github.com/phillijw/ynab/master/Dockerfile`
+`docker build -t YOUR-CONTAINER-NAME https://raw.github.com/GregWellmanJr/ynab/master/Dockerfile`
 
 ## FAQ
 

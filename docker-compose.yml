@@ -1,5 +1,5 @@
 ynab:
-  image: phillijw/ynab
+  image: GregWellmanJr/ynab
   command: wine .wine/drive_c/Program\ Files\ \(x86\)/YNAB\ 4/YNAB\ 4.exe
   volumes:
    # Mount the X11 socket so that we can share graphics with the host system

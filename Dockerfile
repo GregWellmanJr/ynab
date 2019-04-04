@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-MAINTAINER Joe Phillips "phillijw@gmail.com"
+MAINTAINER Greg Wellman "greg@wellmanhouse.net"
 
 # Let apt know that we will be running non-interactively.
 ENV DEBIAN_FRONTEND noninteractive
@@ -24,7 +24,7 @@ RUN apt-get update; apt-get install -y winehq-stable
 RUN apt-get update; apt-get install -y locales tzdata
 RUN locale-gen en_US.UTF-8
 RUN update-locale LANG=en_US.UTF-8
-RUN echo "America/Chicago" > /etc/timezone
+RUN echo "America/New_York" > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 # Create a user inside the container, what has the same UID as your
@@ -43,7 +43,7 @@ ENV HOME /home/docker
 WORKDIR /home/docker
 
 # Add the ynab installer to the image.
-ADD ["http://www.youneedabudget.com/CDNOrigin/download/ynab4/liveCaptive/Win/YNAB%204_4.3.729_Setup.exe", "ynab_setup.exe"]
+ADD ["http://www.youneedabudget.com/CDNOrigin/download/ynab4/liveCaptive/Win/YNAB%204_4.3.857_Setup.exe", "ynab_setup.exe"]
 
 # When it is added via the dockerfile it is owned read+write only by root
 RUN chown docker:docker ynab_setup.exe

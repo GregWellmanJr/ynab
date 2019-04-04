@@ -12,13 +12,13 @@ RUN apt-get update; apt-get install -y wget
 RUN apt-get install -y software-properties-common python-software-properties apt-transport-https
 
 # Setup i386 architecture
-RUN dpkg --add-architecture i386; \
-    wget -nc https://dl.winehq.org/wine-builds/Release.key; \
-    apt-key add Release.key; \
-    apt-add-repository https://dl.winehq.org/wine-builds/ubuntu/
+RUN dpkg --add-architecture i386; \    
+    wget -nc https://dl.winehq.org/wine-builds/winehq.key; \
+    apt-key add winehq.key; \
+    apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ xenial main'
 
 # Get the latest WINE
-RUN apt-get update; apt-get install -y winehq-stable
+RUN apt-get update; apt-get install -y --install-recommends winehq-stable
 
 # Set the locale and timezone.
 RUN apt-get update; apt-get install -y locales tzdata
